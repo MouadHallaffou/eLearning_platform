@@ -22,4 +22,5 @@ class CategoryFactory extends Factory
             'parent_id' => rand(0, 1) ? Category::inRandomOrder()->first()?->id : null, // 50% chance d'avoir un parent
         ];
     }
+    
 }
