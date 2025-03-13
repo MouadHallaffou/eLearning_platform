@@ -4,6 +4,12 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @OA\Info(
+ * title="E-Learning",
+ * version="1.0.0"
+ * )
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,4 +28,3 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
-
