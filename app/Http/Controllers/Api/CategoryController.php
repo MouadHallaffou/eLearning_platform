@@ -11,6 +11,7 @@ use App\Interfaces\CategoryRepositoryInterface;
 use App\Classes\ApiResponseClass;
 use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\DB;
+use OpenAPI\Annotations as OA;
 
 class CategoryController extends Controller
 {
@@ -22,17 +23,36 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/category",
+     *     summary="Get a list of categories",
+     *     tags={"Category"},
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
      */
     public function index()
     {
-        $data = $this->CategoryRepositoryInterface->index();
-
-        return ApiResponseClass::sendResponse(CategoryResource::collection($data), '', 200);
+        $categories = $this->CategoryRepositoryInterface->index();
+        return ApiResponseClass::sendResponse(CategoryResource::collection($categories), '', 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/category",
+     *     summary="Create a new category",
+     *     tags={"Category"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Technology"),
+     *             @OA\Property(property="parent_id", type="integer", nullable=true, example=1)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Category Created Successfully"),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
      */
     public function store(StoreCategoryRequest $request)
     {
@@ -54,7 +74,19 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/category/{id}",
+     *     summary="Get a category by ID",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=404, description="Category Not Found")
+     * )
      */
     public function show($id)
     {
@@ -68,7 +100,27 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/category/{id}",
+     *     summary="Update an existing category",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Updated Category Name"),
+     *             @OA\Property(property="parent_id", type="integer", nullable=true, example=2)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Category Updated Successfully"),
+     *     @OA\Response(response=404, description="Category Not Found")
+     * )
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
@@ -96,7 +148,19 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/category/{id}",
+     *     summary="Delete a category by ID",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=204, description="Category Deleted Successfully"),
+     *     @OA\Response(response=404, description="Category Not Found")
+     * )
      */
     public function destroy($id)
     {
