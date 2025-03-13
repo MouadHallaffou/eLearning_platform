@@ -219,4 +219,4 @@ Ce projet est distribué sous licence MIT. Veuillez consulter le fichier LICENSE
 
 ### Contact
 Pour toute question technique ou suggestion d'amélioration, veuillez contacter :
-mouadhallaffou@gmail.com
+**mouadhallaffou@gmail.com**
