@@ -21,12 +21,14 @@ class StoreTagRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name'      => 'required|min:3|max:255|string',
+            'tags' => ['required', 'array', 'min:1'],
+            'tags.*' => ['required', 'string', 'max:255', 'unique:tags,name'],
         ];
     }
+
 
     public function failedValidation(Validator $validator)
     {
