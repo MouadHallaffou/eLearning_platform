@@ -18,9 +18,25 @@ class Category extends Model
         'parent_id'
     ];
 
+    /**
+     * Relation pour obtenir les sous-catégories.
+     */
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
+    /**
+     * Relation pour obtenir la catégorie parente.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
 }
