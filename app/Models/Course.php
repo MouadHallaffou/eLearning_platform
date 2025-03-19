@@ -34,4 +34,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Tag::class, 'course_tag');
     }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
 }
