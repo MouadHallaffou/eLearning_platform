@@ -13,7 +13,7 @@ class StoreCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // Autoriser tous les utilisateurs pour l'instant
+        return true; 
     }
 
     /**
