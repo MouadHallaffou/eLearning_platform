@@ -19,7 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->word(),
-            'parent_id' => rand(0, 1) ? Category::inRandomOrder()->first()?->id : null, // 50% chance d'avoir un parent
+            'parent_id' => rand(0, 1) ? Category::inRandomOrder()->first()?->id : null, 
         ];
     }
     
