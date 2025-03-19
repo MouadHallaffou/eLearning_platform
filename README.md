@@ -222,8 +222,18 @@ Pour toute question technique ou suggestion d'amélioration, veuillez contacter 
 **mouadhallaffou@gmail.com**
 
 ## Authentification
-### 1. Inscription (Register) - Méthode : POST - URL : http://localhost:8000/api/V1/auth/register - Body (JSON) : ``json { "name": "John Doe", "email": "john.doe@example.com", "password": "password123", "password_confirmation": "password123" } 2. **Connexion (Login)** * **Méthode** : POST * **URL** : http://localhost:8000/api/V1/auth/login` * Body (JSON) : json Copy
 
+### 1. **Inscription (Register)**
+- **Méthode** : POST
+- **URL** : `http://localhost:8000/api/V1/auth/register`
+- **Body** (JSON) :
+  ```json
+  {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "password123",
+      "password_confirmation": "password123"
+  }
 ```
 { "email": "john.doe@example.com", "password": "password123" }
 1. Profil Utilisateur (Profile)
