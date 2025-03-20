@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourseResource extends JsonResource
+class VideoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,16 +15,12 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // return parent::toArray($request);
         return [
             'id'            => $this->id,
             'title'         => $this->title,
             'description'   => $this->description,
-            'content'       => $this->content,
-            'cover'         => $this->cover,
-            'duration'      => $this->duration,
-            'level'         => $this->level,
-            'category_name' => $this->category->name ?? null,
-            'tags'          => $this->tags->pluck('name')->implode(', '), 
+            'url'           => $this->url,
             'created_at'    => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
             'update_at'     => Carbon::parse($this->update_at)->format('Y-m-d H:i:s'),
         ];
