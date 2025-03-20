@@ -67,22 +67,27 @@ class CourseController extends Controller
      *     )
      * )
      */
+
     public function store(StoreCourseRequest $request)
     {
+        if (!auth()->user()->hasRole('mentor')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
+        $validatedRequest = $request->validated();
         $details = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'content' => $request->content,
-            'video' => $request->video,
-            'cover' => $request->cover,
-            'duration' => $request->duration,
-            'level' => $request->level,
-            'category_id' => $request->category_id,
+            'title' => $validatedRequest['title'],
+            'description' => $validatedRequest['description'],
+            'content' => $validatedRequest['content'],
+            'cover' => $validatedRequest['cover'],
+            'duration' => $validatedRequest['duration'],
+            'level' => $validatedRequest['level'],
+            'category_id' => $validatedRequest['category_id'],
+            'user_id' => auth()->id(),
         ];
 
         DB::beginTransaction();
         try {
-            // Création du cours
             $course = $this->courseRepositoryInterface->store($details);
 
             if ($request->has('tag_ids')) {
@@ -135,6 +140,10 @@ class CourseController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->hasAnyRole(['mentor', 'admin'])) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $course = $this->courseRepositoryInterface->getById($id);
         if (!$course) {
             return ApiResponseClass::sendResponse('Course Not Found', '', 404);
@@ -181,21 +190,29 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, $id)
     {
+        if (!auth()->user()->hasRole('mentor')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
+        $validatedRequest = $request->validated(); 
+
         $course = $this->courseRepositoryInterface->getById($id);
 
         if (!$course) {
             return ApiResponseClass::sendResponse('Course Not Found', '', 404);
         }
+        if ($course->user_id !== auth()->id()) {
+            return ApiResponseClass::sendError('Forbidden: You are not the creator of this course.', 403);
+        }
 
         $updateDetails = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'content' => $request->content,
-            'video' => $request->video,
-            'cover' => $request->cover,
-            'duration' => $request->duration,
-            'level' => $request->level,
-            'category_id' => $request->category_id
+            'title' => $validatedRequest['title'],
+            'description' => $validatedRequest['description'],
+            'content' => $validatedRequest['content'],
+            'cover' => $validatedRequest['cover'],
+            'duration' => $validatedRequest['duration'],
+            'level' => $validatedRequest['level'],
+            'category_id' => $validatedRequest['category_id'],
         ];
 
         DB::beginTransaction();
@@ -229,7 +246,6 @@ class CourseController extends Controller
             return ApiResponseClass::rollback($ex);
         }
     }
-
     /**
      * @OA\Delete(
      *     path="/api/V1/courses/{id}",
@@ -256,9 +272,18 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->hasAnyRole(['mentor', 'admin'])) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $course = $this->courseRepositoryInterface->getById($id);
+
         if (!$course) {
             return ApiResponseClass::sendResponse('Course Not Found', '', 404);
+        }
+
+        if ($course->user_id !== auth()->id() && !auth()->user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Forbidden: You are not the creator of this course.', 403);
         }
 
         DB::beginTransaction();
