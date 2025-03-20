@@ -11,6 +11,7 @@ use App\Interfaces\TagRepositoryInterface;
 use App\Classes\ApiResponseClass;
 use App\Http\Resources\TagResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use OpenAPI\Annotations as OA;
 
 class TagController extends Controller
@@ -55,6 +56,10 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $tags = $request->tags;
         DB::beginTransaction();
         try {
@@ -109,10 +114,15 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, $id)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $Tag = $this->TagRepositoryInterface->getById($id);
         if (!$Tag) {
             return ApiResponseClass::sendResponse('Tag Not Found', '', 404);
         }
+
         $updateDetails = ['name' => $request->name];
         DB::beginTransaction();
         try {
@@ -137,10 +147,15 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $Tag = $this->TagRepositoryInterface->getById($id);
         if (!$Tag) {
             return ApiResponseClass::sendResponse('Tag Not Found', '', 404);
         }
+
         DB::beginTransaction();
         try {
             $this->TagRepositoryInterface->delete($id);

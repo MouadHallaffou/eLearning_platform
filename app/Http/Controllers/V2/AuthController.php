@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Interfaces\UserRepositoryInterface;
-use App\Classes\AuthResponseApi  as AuthResponseApi;
+use App\Classes\ApiResponseClass  as ApiResponseClass;
 
 /**
  * @OA\Info(
@@ -18,7 +18,7 @@ use App\Classes\AuthResponseApi  as AuthResponseApi;
  *     description="API documentation for the AuthController"
  * )
  */
-class AuthController extends AuthResponseApi
+class AuthController extends ApiResponseClass
 {
     protected $userRepository;
 
@@ -213,7 +213,7 @@ class AuthController extends AuthResponseApi
     public function refresh()
     {
         try {
-            $newToken = auth('api')->refresh(); // Utiliser le guard 'api'
+            $newToken = auth('api')->refresh(); 
             return $this->sendResponse($this->respondWithToken($newToken), 'Token refreshed successfully.');
         } catch (\Exception $e) {
             return $this->sendError('Token refresh failed.', $e->getMessage(), 500);
