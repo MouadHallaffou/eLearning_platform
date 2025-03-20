@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\StatsRepository;
+use App\Repositories\VideoRepository;
 use App\Repositories\CourseRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\CategoryRepository;
@@ -12,6 +13,7 @@ use App\Interfaces\TagRepositoryInterface;
 use App\Repositories\EnrollmentRepository;
 use App\Interfaces\UserRepositoryInterface;
 use App\Interfaces\StatsRepositoryInterface;
+use App\Interfaces\VideoRepositoryInterface;
 use App\Interfaces\CourseRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\EnrollmentRepositoryInterface;
@@ -29,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(EnrollmentRepositoryInterface::class, EnrollmentRepository::class);
         $this->app->bind(StatsRepositoryInterface::class,StatsRepository::class);
+        $this->app->bind(VideoRepositoryInterface::class, VideoRepository::class);
     }
 
     /**

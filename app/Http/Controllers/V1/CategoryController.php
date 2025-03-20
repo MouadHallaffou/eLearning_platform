@@ -4,14 +4,15 @@ namespace App\Http\Controllers\V1;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use OpenAPI\Annotations as OA;
+use App\Classes\ApiResponseClass;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\CategoryResource;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Interfaces\CategoryRepositoryInterface;
-use App\Classes\ApiResponseClass;
-use App\Http\Resources\CategoryResource;
-use Illuminate\Support\Facades\DB;
-use OpenAPI\Annotations as OA;
 
 class CategoryController extends Controller
 {
@@ -56,6 +57,10 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+        
         $details = [
             'name' => $request->name,
             'parent_id' => $request->parent_id
@@ -124,6 +129,10 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+        
         $Category = $this->CategoryRepositoryInterface->getById($id);
 
         if (!$Category) {
@@ -164,6 +173,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        if (!Auth::user()->hasRole('admin')) {
+            return ApiResponseClass::sendError('Unauthorized', 403);
+        }
+
         $Category = $this->CategoryRepositoryInterface->getById($id);
 
         if (!$Category) {
