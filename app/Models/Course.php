@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
-    protected $model = Course::class;
+    protected $table = 'courses';
 
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory, SoftDeletes;
@@ -17,11 +17,11 @@ class Course extends Model
         'title',
         'description',
         'content',
-        'video',
         'cover',
         'duration',
         'level',
         'category_id',
+        'user_id',
     ];
 
 
@@ -38,5 +38,17 @@ class Course extends Model
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+    /**
+     * Relation avec l'utilisateur qui a créé le cours.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
