@@ -220,3 +220,89 @@ Ce projet est distribué sous licence MIT. Veuillez consulter le fichier LICENSE
 ### Contact
 Pour toute question technique ou suggestion d'amélioration, veuillez contacter :
 **mouadhallaffou@gmail.com**
+
+## Authentification
+
+### 1. **Inscription (Register)**
+- **Méthode** : POST
+- **URL** : `http://localhost:8000/api/V1/auth/register`
+- **Body** (JSON) :
+  ```json
+  {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "password123",
+      "password_confirmation": "password123"
+  }
+```
+{ "email": "john.doe@example.com", "password": "password123" }
+1. Profil Utilisateur (Profile)
+2. Méthode : GET
+3. URL : http://localhost:8000/api/V1/auth/profile
+4. Headers :
+   * Authorization: Bearer <token>
+5. Déconnexion (Logout)
+6. Méthode : POST
+7. URL : http://localhost:8000/api/V1/auth/logout
+8. Headers :
+   * Authorization: Bearer <token>
+9. Rafraîchir le Token (Refresh)
+10. Méthode : POST
+11. URL : http://localhost:8000/api/V1/auth/refresh
+12. Headers :
+   * Authorization: Bearer <token>
+13. Mettre à Jour le Profil (Update Profile)
+14. Méthode : POST
+15. URL : http://localhost:8000/api/V1/auth/update-profile
+16. Headers :
+   * Authorization: Bearer <token>
+17. Body (JSON) : json Copy
+
+```
+{ "name": "John Updated", "email": "john.updated@example.com" }
+Rôles et Permissions 1. Lister tous les rôles * Méthode : GET * URL : http://localhost:8000/api/V1/roles 2. Créer un nouveau rôle * Méthode : POST * URL : http://localhost:8000/api/V1/roles * Body (JSON) : json Copy
+
+```
+{ "name": "editor", "permissions": ["view courses", "edit courses"] }
+1. Modifier un rôle
+2. Méthode : PUT
+3. URL : http://localhost:8000/api/V1/roles/{id}
+4. Body (JSON) : json Copy
+
+```
+{ "name": "supereditor", "permissions": ["delete courses"] }
+1. Supprimer un rôle
+2. Méthode : DELETE
+3. URL : http://localhost:8000/api/V1/roles/{id}
+4. Assigner un rôle à un utilisateur
+5. Méthode : POST
+6. URL : http://localhost:8000/api/V1/users/{userId}/assign-role
+7. Body (JSON) : json Copy
+
+```
+{ "role": "editor" }
+1. Retirer un rôle d'un utilisateur
+2. Méthode : DELETE
+3. URL : http://localhost:8000/api/V1/users/{userId}/remove-role
+4. Body (JSON) : json Copy
+
+```
+{ "role": "editor" }
+1. Synchroniser les permissions d'un rôle
+2. Méthode : PUT
+3. URL : http://localhost:8000/api/V1/roles/{id}/sync-permissions
+4. Body (JSON) : json Copy
+
+```
+{ "permissions": ["view courses", "edit courses"] }
+Statistiques 1. Statistiques des cours * Méthode : GET * URL : http://localhost:8000/api/V1/stats/courses 2. Statistiques des catégories * Méthode : GET * URL : http://localhost:8000/api/V1/stats/categories 3. Statistiques des tags * Méthode : GET * URL : http://localhost:8000/api/V1/stats/tags Enrôlement (Inscriptions aux Cours) 1. S'inscrire à un cours * Méthode : POST * URL : http://localhost:8000/api/V1/courses/{id}/enroll * Headers : * Authorization: Bearer <token> 2. Lister les inscriptions à un cours * Méthode : GET * URL : http://localhost:8000/api/V1/courses/{id}/enrollments * Headers : * Authorization: Bearer <token> 3. Mettre à jour le statut d'une inscription * Méthode : PUT * URL : http://localhost:8000/api/V2/enrollments/{id} * Headers : * Authorization: Bearer <token> * Body (JSON) : json Copy
+
+```
+{ "status": "accepted" }
+1. Supprimer une inscription
+2. Méthode : DELETE
+3. URL : http://localhost:8000/api/V2/enrollments/{id}
+4. Headers :
+   * Authorization: Bearer <token>
+
+

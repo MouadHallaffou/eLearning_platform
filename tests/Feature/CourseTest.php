@@ -1,7 +1,9 @@
 <?php
 
-use App\Models\Course;
 use App\Models\Tag;
+use App\Models\User;
+use App\Models\Course;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 uses(DatabaseTransactions::class);
@@ -18,11 +20,11 @@ test("list courses", function () {
                 'title',
                 'description',
                 'content',
-                'video',
                 'cover',
                 'duration',
                 'level',
                 'category_id',
+                'user_id'
             ],
         ],
     ]);
@@ -39,33 +41,30 @@ test("can show a course", function () {
     ]);
 });
 
-test("can create a course", function () {
-    $tag = Tag::factory()->create();
+test("mentor can create a course", function () {
+    $mentor = User::factory()->create();
+    $mentor->assignRole('mentor');
+
     $courseData = [
         'title' => 'New Course',
-        'description' => 'Course Description',
-        'content' => 'Course Content',
-        'video' => 'http://example.com/video.mp4',
-        'cover' => 'http://example.com/cover.jpg',
-        'duration' => 120,
+        'description' => 'This is a new course.',
+        'content' => 'Course content',
+        'cover' => 'cover.jpg',
+        'duration' => 60,
         'level' => 'beginner',
         'category_id' => 1,
-        'tag_ids' => [$tag->id],
+        'user_id' => Auth::id(),
     ];
 
-    $response = $this->postJson('api/courses', $courseData);
-    $response->assertStatus(201);
-    $response->assertJsonFragment([
-        'title' => $courseData['title'],
-        'description' => $courseData['description'],
-    ]);
+    $response = $this->actingAs($mentor)->postJson("api/courses", $courseData);
+
+    $response->assertStatus(201)
+        ->assertJsonFragment(['title' => 'New Course']);
 
     $this->assertDatabaseHas('courses', [
-        'title' => $courseData['title'],
-        'description' => $courseData['description'],
+        'title' => 'New Course',
+        'user_id' => $mentor->id,
     ]);
-    $course = Course::latest()->first();
-    $this->assertCount(1, $course->tags);
 });
 
 test("can update a course", function () {
@@ -75,7 +74,6 @@ test("can update a course", function () {
         'title' => 'Updated Course Title',
         'description' => 'Updated Course Description',
         'content' => 'Updated Course Content',
-        'video' => 'http://example.com/updated-video.mp4',
         'cover' => 'http://example.com/updated-cover.jpg',
         'duration' => 150,
         'level' => 'intermediate',

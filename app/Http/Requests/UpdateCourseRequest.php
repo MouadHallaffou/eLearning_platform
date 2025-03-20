@@ -27,11 +27,11 @@ class UpdateCourseRequest extends FormRequest
             'title'       => 'required|min:3|max:255|string',
             'description' => 'required|min:10|string',
             'content'     => 'required|string',
-            'video'       => 'nullable|url',
             'cover'       => 'nullable|url',
             'duration'    => 'nullable|numeric|min:0',
             'level'       => 'required|in:beginner,intermediate,advanced',
             'category_id' => 'required|exists:categories,id',
+            'user_id'     => 'required|exists:users,id',
             'tag_ids'     => 'nullable|array',
             'tag_ids.*'   => 'required|string|exists:tags,id', 
         ];

@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->text('content');
-            $table->string('video')->nullable();
             $table->string('cover')->nullable();
             $table->decimal('duration', 8, 2)->nullable();
             $table->enum('level', ['beginner', 'intermediate', 'advanced']);
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete(); 
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
