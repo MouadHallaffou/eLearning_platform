@@ -23,6 +23,8 @@ class UpdateProfileRequest extends FormRequest
             'name' => 'sometimes|required',
             'email' => 'sometimes|email|unique:users,email,' . $this->user()->id,
             'password' => 'sometimes|required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'biographie' => 'nullable|string',
         ];
     }
 
