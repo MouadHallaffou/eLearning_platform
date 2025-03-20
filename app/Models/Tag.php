@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
 {
-    protected $model = Tag::class;
+    protected $table = 'tags';
 
     /** @use HasFactory<\Database\Factories\TagFactory> */
     use HasFactory, SoftDeletes;

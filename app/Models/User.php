@@ -22,6 +22,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'photo',
+        'biographie',
     ];
 
     /**
@@ -66,5 +68,13 @@ class User extends Authenticatable implements JWTSubject
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    /**
+     * Relation avec les cours créés par l'utilisateur.
+     */
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
     }
 }
