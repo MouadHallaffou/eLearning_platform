@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use App\Interfaces\UserRepositoryInterface;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use App\Interfaces\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -29,10 +31,22 @@ class UserRepository implements UserRepositoryInterface
     public function updateUser($id, array $data)
     {
         $user = $this->user->find($id);
-        if ($user) {
-            $user->update($data);
-            return $user;
+
+        if (!$user) {
+            return null; 
         }
-        return null;
+        if (isset($data['photo']) && $data['photo'] instanceof UploadedFile) {
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+                $path = $data['photo']->store('profiles', 'public');
+            $data['photo'] = $path;
+        } else {
+            unset($data['photo']);
+        }
+    
+        $user->update($data);
+    
+        return $user;
     }
 }
