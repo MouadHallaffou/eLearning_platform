@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,11 +22,11 @@ class CourseFactory extends Factory
             'title' => $this->faker->word(),
             'description' => $this->faker->text(),
             'content' => $this->faker->paragraph(),
-            'video' => $this->faker->url(),
             'cover' => $this->faker->imageUrl(),
             'duration' => $this->faker->randomFloat(2, 1, 10), 
             'level' => $this->faker->randomElement(['beginner', 'intermediate', 'advanced']),
             'category_id' => Category::factory(), 
+            'user_id' => User::factory(), 
         ];
     }
 }
