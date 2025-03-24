@@ -126,6 +126,7 @@ return [
     // 'providers' => [
     //     // Autres providers...
     //     App\Providers\RepositoryServiceProvider::class,
+    //     Spatie\Permission\PermissionServiceProvider::class,
     // ],
 
 
