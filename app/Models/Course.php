@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Course extends Model
 {
     protected $table = 'courses';
+    protected $table = 'courses';
 
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory, SoftDeletes;
@@ -21,6 +22,7 @@ class Course extends Model
         'duration',
         'level',
         'category_id',
+        'user_id',
         'user_id',
     ];
 
