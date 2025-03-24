@@ -19,22 +19,24 @@ class EnrollmentController extends Controller
 
     // POST /api/V1/courses/{id}/enroll
     public function enroll(Request $request, $courseId)
-    {
-        try {
-            $user = $request->user();
+{
+    try {
+        $user = $request->user();
 
-            $existingEnrollment = $this->enrollmentRepository->getEnrollmentByUserAndCourse($user->id, $courseId);
-            if ($existingEnrollment) {
-                return response()->json(['message' => 'User is already enrolled in this course.'], 400);
-            }
-
-            // Enregistrer l'inscription
-            $enrollment = $this->enrollmentRepository->enrollUser($user->id, $courseId);
-            return response()->json(['message' => 'Enrollment successful.', 'data' => $enrollment], 201);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
+        // Use the new repository method
+        $existingEnrollment = $this->enrollmentRepository
+            ->getEnrollmentByUserAndCourse($user->id, $courseId);
+            
+        if ($existingEnrollment) {
+            return response()->json(['message' => 'User is already enrolled in this course.'], 400);
         }
+
+        $enrollment = $this->enrollmentRepository->enrollUser($user->id, $courseId);
+        return response()->json(['message' => 'Enrollment successful.', 'data' => $enrollment], 201);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'An error occurred.', 'error' => $e->getMessage()], 500);
     }
+}
 
     // GET /api/V1/courses/{id}/enrollments
     public function listEnrollments($courseId)

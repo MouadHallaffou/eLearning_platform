@@ -83,7 +83,7 @@ class VideoController extends Controller
             return ApiResponseClass::sendError('Unauthorized', 403);
         }
 
-        $data = $request->validated();
+        $updateData = $request->validated();
 
         if ($request->hasFile('video_file')) {
             $video = $this->videoRepository->getById($id);
@@ -92,16 +92,16 @@ class VideoController extends Controller
                 Storage::disk('public')->delete($oldFilePath);
             }
             $path = $request->file('video_file')->store('videos', 'public');
-            $data['url'] = Storage::url($path);
+            $updateData['url'] = Storage::url($path);
         } else {
             $video = $this->videoRepository->getById($id);
             if ($video && $video->url) {
-                $data['url'] = $video->url;
+                $updateData['url'] = $video->url;
             } else {
-                $data['url'] = 'http://mouadvideoexemple.com/default-video-url.mp4'; 
+                $updateData['url'] = 'http://mouadvideoexemple.com/default-video-url.mp4'; 
             }
         }
-        $video = $this->videoRepository->update($data, $id);
+        $video = $this->videoRepository->update($updateData, $id);
 
         if (!$video) {
             return ApiResponseClass::sendError('Video not found', 404);

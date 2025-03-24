@@ -23,6 +23,7 @@ class EnrollmentRepository implements EnrollmentRepositoryInterface
 
     public function updateEnrollmentStatus($enrollmentId, $status)
     {
+        // $this->authorize('update', Enrollment::findOrFail($enrollmentId));
         $enrollment = Enrollment::findOrFail($enrollmentId);
         $enrollment->update(['status' => $status]);
         return $enrollment;
@@ -33,5 +34,12 @@ class EnrollmentRepository implements EnrollmentRepositoryInterface
         $enrollment = Enrollment::findOrFail($enrollmentId);
         $enrollment->delete();
         return $enrollment;
+    }
+
+    public function getEnrollmentByUserAndCourse($userId, $courseId)
+    {
+        return Enrollment::where('user_id', $userId)
+                       ->where('course_id', $courseId)
+                       ->first();
     }
 }

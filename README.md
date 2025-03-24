@@ -306,3 +306,4 @@ Statistiques 1. Statistiques des cours * Méthode : GET * URL : http://localhost
    * Authorization: Bearer <token>
 
 
+artillery run test.yml --record --key a9_pxqsmlxdz3v023zj5appsl641edkalgry
