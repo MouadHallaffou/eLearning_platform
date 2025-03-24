@@ -1,6 +1,5 @@
 <?php
 
-use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V2\VideoController;

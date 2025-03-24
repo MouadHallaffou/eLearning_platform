@@ -83,11 +83,7 @@ class VideoController extends Controller
             return ApiResponseClass::sendError('Unauthorized', 403);
         }
 
-<<<<<<< HEAD
         $updateData = $request->validated();
-=======
-        $data = $request->validated();
->>>>>>> main
 
         if ($request->hasFile('video_file')) {
             $video = $this->videoRepository->getById($id);
@@ -96,7 +92,6 @@ class VideoController extends Controller
                 Storage::disk('public')->delete($oldFilePath);
             }
             $path = $request->file('video_file')->store('videos', 'public');
-<<<<<<< HEAD
             $updateData['url'] = Storage::url($path);
         } else {
             $video = $this->videoRepository->getById($id);
@@ -107,18 +102,6 @@ class VideoController extends Controller
             }
         }
         $video = $this->videoRepository->update($updateData, $id);
-=======
-            $data['url'] = Storage::url($path);
-        } else {
-            $video = $this->videoRepository->getById($id);
-            if ($video && $video->url) {
-                $data['url'] = $video->url;
-            } else {
-                $data['url'] = 'http://mouadvideoexemple.com/default-video-url.mp4'; 
-            }
-        }
-        $video = $this->videoRepository->update($data, $id);
->>>>>>> main
 
         if (!$video) {
             return ApiResponseClass::sendError('Video not found', 404);
@@ -131,7 +114,7 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        if (!auth()->user()->hasAnyRole(['mentor', 'admin'])) {
+        if (Auth::user()->hasAnyRole(['mentor', 'admin'])) {
             return ApiResponseClass::sendError('Unauthorized', 403);
         }
 
