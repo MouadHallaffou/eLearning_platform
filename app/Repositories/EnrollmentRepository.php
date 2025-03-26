@@ -12,7 +12,6 @@ class EnrollmentRepository implements EnrollmentRepositoryInterface
         return Enrollment::create([
             'user_id' => $userId,
             'course_id' => $courseId,
-            'status' => 'pending',
         ]);
     }
 

@@ -20,7 +20,9 @@ use App\Interfaces\CourseRepositoryInterface;
 use App\Interfaces\MentorRepositoryInterface;
 use App\Interfaces\StudentRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Interfaces\CourseSearchRepositoryInterface;
 use App\Interfaces\EnrollmentRepositoryInterface;
+use App\Repositories\CourseSearchRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -38,6 +40,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(VideoRepositoryInterface::class, VideoRepository::class);
         $this->app->bind(MentorRepositoryInterface::class,MentorRepository::class);
         $this->app->bind(StudentRepositoryInterface::class,StudentRepository::class);
+        $this->app->bind(CourseSearchRepositoryInterface::class,CourseSearchRepository::class);
     }
 
     /**
