@@ -2,18 +2,20 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\V2\VideoController;
 use App\Http\Controllers\V1\TagController;
 use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\UserController;
 use App\Http\Controllers\V2\AuthController;
 use App\Http\Controllers\V1\StatsController;
+use App\Http\Controllers\V2\VideoController;
 use App\Http\Controllers\V1\CourseController;
+use App\Http\Controllers\V2\MentorController;
+use App\Http\Controllers\V3\SearchController;
+use App\Http\Controllers\V2\StudentController;
+use App\Http\Controllers\V3\PaymentController;
 use App\Http\Controllers\V1\CategoryController;
 use App\Http\Controllers\V1\PermissionController;
 use App\Http\Controllers\V2\EnrollmentController;
-use App\Http\Controllers\V2\MentorController;
-use App\Http\Controllers\V2\StudentController;
 
 
 Route::get('/user', function (Request $request) {
@@ -78,4 +80,19 @@ Route::prefix('V1')->group(function () {
     Route::get('/students/{id}/courses', [StudentController::class, 'getCourses']);
     Route::get('/students/{id}/progress', [StudentController::class, 'getProgress']);
     Route::get('/students/{id}/badges', [StudentController::class, 'getBadges']);
+});
+
+
+Route::prefix('V3')->middleware('auth:api')->group(function () {
+Route::get("/payment", [PaymentController::class, "index"])->name("payment.index");
+Route::post("/payment/checkout/{id}", [EnrollmentController::class, "enroll"])->name("payment.checkout");
+Route::get("/payment/success/{course}", [PaymentController::class, "success"])->name("payment.success");
+Route::get('/payments/history', [EnrollmentController::class, 'paymentHistory']);
+});
+
+Route::prefix('V3')->group(function () {
+    Route::get('/courses', [SearchController::class, 'searchCourses']); 
+    Route::get('/courses/filter', [SearchController::class, 'filterCourses']); 
+    Route::get('/mentors', [SearchController::class, 'searchMentors']);
+    Route::get('/students', [SearchController::class, 'filterStudentsByBadge']); 
 });
