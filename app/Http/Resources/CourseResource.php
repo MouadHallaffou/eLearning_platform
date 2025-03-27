@@ -23,6 +23,7 @@ class CourseResource extends JsonResource
             'cover'         => $this->cover,
             'duration'      => $this->duration,
             'level'         => $this->level,
+            'price'         => $this->price,
             'category_name' => $this->category->name ?? null,
             'tags'          => $this->tags->pluck('name')->implode(', '), 
             'created_at'    => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),

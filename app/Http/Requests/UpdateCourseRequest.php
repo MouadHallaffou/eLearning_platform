@@ -30,6 +30,7 @@ class UpdateCourseRequest extends FormRequest
             'cover'       => 'nullable|url',
             'duration'    => 'nullable|numeric|min:0',
             'level'       => 'required|in:beginner,intermediate,advanced',
+            'price'       => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'user_id'     => 'required|exists:users,id',
             'tag_ids'     => 'nullable|array',

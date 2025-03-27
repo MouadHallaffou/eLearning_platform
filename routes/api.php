@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\V3\BadgeController;
 use App\Http\Controllers\V1\TagController;
 use App\Http\Controllers\V1\RoleController;
 use App\Http\Controllers\V1\UserController;
@@ -95,4 +96,12 @@ Route::prefix('V3')->group(function () {
     Route::get('/courses/filter', [SearchController::class, 'filterCourses']); 
     Route::get('/mentors', [SearchController::class, 'searchMentors']);
     Route::get('/students', [SearchController::class, 'filterStudentsByBadge']); 
+});
+
+Route::prefix('V3/badges')->middleware('auth:api')->group(function () {
+    Route::get('/', [BadgeController::class, 'index']);
+    Route::post('/', [BadgeController::class, 'store']);
+    Route::get('/{id}', [BadgeController::class, 'show']);
+    Route::put('/{id}', [BadgeController::class, 'update']);
+    Route::delete('/{id}', [BadgeController::class, 'destroy']);
 });
