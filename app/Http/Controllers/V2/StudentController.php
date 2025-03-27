@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\V2;
 
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Interfaces\StudentRepositoryInterface;
-use Illuminate\Http\JsonResponse;
 
 class StudentController extends Controller
 {
@@ -26,4 +27,9 @@ class StudentController extends Controller
     {
         return response()->json($this->studentRepository->getStudentBadges($id));
     }
+    // public function getBadges($id)
+    // {
+    //     $badges = User::findOrFail($id)->badges()->where('type', 'student')->get();
+    //     return BadgeResource::collection($badges);
+    // }
 }

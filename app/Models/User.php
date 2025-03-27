@@ -78,4 +78,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Course::class);
     }
+
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class)->withTimestamps();
+    }
+
+    public function completedCourses()
+    {
+        return $this->courses()->where('progress', 100);
+    }
 }

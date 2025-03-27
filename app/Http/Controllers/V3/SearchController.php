@@ -2,59 +2,55 @@
 
 namespace App\Http\Controllers\V3;
 
-use App\Models\User;
-use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Spatie\Permission\Models\Role;
+use App\Interfaces\CourseSearchRepositoryInterface;
 
 class SearchController extends Controller
 {
+    private $searchRepository;
+
+    public function __construct(CourseSearchRepositoryInterface $searchRepository)
+    {
+        $this->searchRepository = $searchRepository;
+    }
+
     // GET /api/V3/courses?search=
     public function searchCourses(Request $request)
     {
-        $query = $request->input('search');
-        
-        $courses = Course::with(['category', 'mentor'])
-            ->where('title', 'LIKE', "%$query%")
-            ->orWhere('description', 'LIKE', "%$query%")
-            ->get();
-
+        $courses = $this->searchRepository->searchCourses($request->input('search'))->get();
         return response()->json($courses);
     }
 
     // GET /api/V3/courses/filter?category_id=&difficulty=
     public function filterCourses(Request $request)
     {
-        $courses = Course::with(['category', 'mentor']);
-
-        if ($request->has('category_id')) {
-            $courses->where('category_id', $request->category_id);
-        }
-
-        if ($request->has('difficulty')) {
-            $courses->where('level', $request->difficulty);
-        }
-
-        return response()->json($courses->get());
+        $courses = $this->searchRepository->filterCourses(
+            $request->input('category_id'),
+            $request->input('difficulty')
+        )->get();
+        
+        return response()->json($courses);
     }
 
     // GET /api/V3/mentors?search=
     public function searchMentors(Request $request)
     {
-        $query = $request->input('search', '');
-
-        return User::with(['courses' => fn($q) => $q->select('id', 'title', 'user_id')])
-            ->whereHas('roles', fn($q) => $q->where('name', 'mentor'))
-            ->when($query, fn($q) => $q->where('name', 'LIKE', "%$query%"))
-            ->get(['id', 'name']);
+        $mentors = $this->searchRepository->searchMentors($request->input('search'));
+        return response()->json($mentors);
     }
 
-    // GET /api/V3/students?badges=
-    // public function filterStudentsByBadge(Request $request)
+    // GET /api/V3/mentors/courses?search=
+    // public function searchCourseByMentors(Request $request)
     // {
-    //     return response()->json(
-    //         $this->searchRepo->filterStudentsByBadge($request->input('badges'))
-    //     );
+    //     $mentorsWithCourses = $this->searchRepository->searchMentorsWithCourses($request->input('search'));
+    //     return response()->json($mentorsWithCourses);
     // }
+
+    // GET /api/V3/students?badges=
+    public function filterStudentsByBadge(Request $request)
+    {
+        $students = $this->searchRepository->filterStudentsByBadge($request->input('badges'));
+        return response()->json($students);
+    }
 }
