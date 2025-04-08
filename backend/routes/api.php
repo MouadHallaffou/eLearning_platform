@@ -105,3 +105,7 @@ Route::prefix('V3/badges')->middleware('auth:api')->group(function () {
     Route::put('/{id}', [BadgeController::class, 'update']);
     Route::delete('/{id}', [BadgeController::class, 'destroy']);
 });
+
+Route::apiResource('/categories', CategoryController::class);
+Route::apiResource('/tags', TagController::class);
+Route::apiResource('/courses', CourseController::class);
