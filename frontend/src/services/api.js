@@ -18,3 +18,11 @@ export const category = {
     updateCategory: (id, data) => api.put(`/categories/${id}`, data),
     deleteCategory: (id) => api.delete(`/categories/${id}`),
 }
+
+export const course = {
+    getCourses: () => api.get("/courses"),
+    getCourse: (id) => api.get(`/courses/${id}`),
+    createCourse: (data) => api.post("/courses", data),
+    updateCourse: (id, data) => api.put(`/courses/${id}`, data),
+    deleteCourse: (id) => api.delete(`/courses/${id}`),
+}
